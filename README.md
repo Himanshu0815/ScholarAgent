@@ -1,3 +1,4 @@
+
 # ScholarAgent — Academic Research & Education Assistant
 
 **ScholarAgent** is a sophisticated React-based AI application designed to assist researchers, students, and academics. It leverages the **Google Gemini 2.5 Flash** model with **Search Grounding** to perform real-time research, synthesize academic papers, and generate citation-backed reports.
@@ -28,6 +29,63 @@
 *   **Markdown Export:** Download raw Markdown files for editing in LaTeX or other editors.
 
 ---
+
+## 🔄 Application Workflow
+
+```mermaid
+graph TD
+    User([User])
+    
+    subgraph Frontend [React Client]
+        Input[Search / Topic Input]
+        State[State Management]
+        Renderer[Markdown Renderer]
+        Export[Export Tools]
+        
+        subgraph Views
+            ResearchView[Research View]
+            FeedView[Personalized Feed]
+            ChatView[RAG Chat Interface]
+        end
+    end
+
+    subgraph Service [Gemini Service Layer]
+        GenResearch[generateResearch]
+        GenFeed[generateResearchFeed]
+        GenChat[generateChatResponse]
+        Processor[processCitations]
+    end
+
+    subgraph Backend [Google Gemini API]
+        GeminiModel[Gemini 2.5 Flash]
+        GoogleSearch[Google Search Tool]
+    end
+
+    %% Research Flow
+    User -->|1. Enters Topic| Input
+    Input -->|2. Triggers| GenResearch
+    GenResearch -->|3. Prompt + Search Config| GeminiModel
+    
+    %% Feed Flow
+    User -->|1. Selects Topics| FeedView
+    FeedView -->|2. Triggers| GenFeed
+    GenFeed -->|3. Prompt + Topics| GeminiModel
+
+    %% Chat Flow
+    User -->|1. Asks Question| ChatView
+    ChatView -->|2. Sends History + Report Context| GenChat
+    GenChat -->|3. Constructs RAG Prompt| GeminiModel
+
+    %% API Processing
+    GeminiModel <-->|4. Grounding Search| GoogleSearch
+    GeminiModel -->|5. Returns Text + Metadata| Processor
+    Processor -->|6. Injects Inline Citations [x]| Renderer
+
+    %% Output
+    Renderer -->|7. Displays Content| ResearchView
+    Renderer -->|7. Displays Answer| ChatView
+    ResearchView -->|8. Export PDF/BibTeX| Export
+```
 
 ## 🛠 Technical Architecture
 
