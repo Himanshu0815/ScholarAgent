@@ -1,0 +1,5 @@
+{
+  "name": "ScholarAgent",
+  "description": "An advanced academic research assistant leveraging Gemini to synthesize papers, analyze trends, and generate citation-backed reports.",
+  "requestFramePermissions": []
+}
